@@ -116,8 +116,8 @@ flow: all_fuzz
 	@grep "Fuzzing completed successfully" $@
 
 .build/%.ll: .build/%.mlir
-	/opt/polygeist/llvm-project/build/bin/mlir-opt $< --convert-to-llvm -o $@.inter
-	/opt/polygeist/llvm-project/build/bin/mlir-translate $@.inter --mlir-to-llvmir -o $@
+	mlir-opt $< --convert-to-llvm -o $@.inter
+	mlir-translate $@.inter --mlir-to-llvmir -o $@
 
 all_ast: $(AST)
 all_svgs: $(SVGS)
@@ -149,11 +149,11 @@ all_svg: $(ALL_SVG)
 	@touch $@
 
 %.cdfg.dot: %.ll
-	/opt/polygeist/llvm-project/build/bin/opt -passes=dot-cfg -cfg-dot-filename-prefix=$@. -o /dev/null $<
+	opt -passes=dot-cfg -cfg-dot-filename-prefix=$@. -o /dev/null $<
 	mv $@..HACE* $@
 
 %.cfg.dot: %.ll
-	/opt/polygeist/llvm-project/build/bin/opt -passes=dot-cfg-only -cfg-dot-filename-prefix=$@. -o /dev/null $<
+	opt -passes=dot-cfg-only -cfg-dot-filename-prefix=$@. -o /dev/null $<
 	mv $@..HACE* $@
 
 all_cdfg: $(ALL_CDFG)

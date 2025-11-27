@@ -307,7 +307,7 @@ def compile_obj_file(input_file, output_file, json_data):
         # Check if the LLVM IR file contains the function specified in the JSON data
         check_function_in_llvm_ir(input_file, json_data)
         # Compile LLVM IR to object file
-        subprocess.run(['/opt/polygeist/llvm-project/build/bin/llc', '-mtriple=x86_64-pc-linux-gnu', '-filetype=obj', input_file, '-o', output_file], check=True)
+        subprocess.run(['llc', '-mtriple=x86_64-pc-linux-gnu', '-filetype=obj', input_file, '-o', output_file], check=True)
     else:
         raise ValueError("Unsupported file type. Only .c and .ll files are supported.")
 
