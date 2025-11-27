@@ -83,6 +83,18 @@ VERILOGS  ?=  \
 HONGGFUZZ=$$(which honggfuzz)
 
 
+## Check that hongfuzz and LLVM binaries can be directly called
+HONGGFUZZ_BINARY := $(shell command -v honggfuzz)
+MLIR_OPT_BINARY  := $(shell command -v mlir-opt)
+
+ifeq ($(HONGGFUZZ_BINARY),)
+$(error "honggfuzz not found in PATH. Please check the README for more info.")
+endif
+
+ifeq ($(MLIR_OPT_BINARY),)
+$(error "mlir-opt not found in PATH. Please check the README for more info.")
+endif
+
 REBASED  := $(subst tests,.build,$(VERILOGS))
 AST      := $(patsubst %.v,%.ast, $(REBASED))
 MLIR     := $(patsubst %.ast,%.mlir, $(AST))
