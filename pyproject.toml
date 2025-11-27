@@ -1,0 +1,6 @@
+
+
+[tool.mypy]
+disable_error_code = ["import-untyped", "import-not-found"]
+exclude = "hace/modules/**/*.py"
+
