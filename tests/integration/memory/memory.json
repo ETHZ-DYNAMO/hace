@@ -1,0 +1,11 @@
+{
+    "name_function": "memory",
+    "return_type": "void",
+    "arguments": [
+        {
+            "name": "addr",
+            "type": "int*",
+            "size": 2
+        }
+    ]
+}

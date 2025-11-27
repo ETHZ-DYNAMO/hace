@@ -1,0 +1,11 @@
+{
+    "name_function": "truncation_signed",
+    "return_type": "char",
+    "arguments": [
+        {
+            "name": "a",
+            "type": "int",
+			"size": 1
+        }
+    ]
+}

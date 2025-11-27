@@ -1,0 +1,4 @@
+func.func @truncation_signed(%a : i32) -> (i8) {
+	%r = func.call @HACE.truncation_signed(%a) : (i32) -> (i8)
+	func.return %r : i8
+}

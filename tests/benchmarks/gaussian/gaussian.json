@@ -1,0 +1,16 @@
+{
+    "name_function": "gaussian",
+    "return_type": "void",
+    "arguments": [
+        {
+            "name": "c",
+            "type": "int*",
+            "size": 16
+        },
+        {
+            "name": "A",
+            "type": "int*",
+            "size": 256
+        }
+    ]
+}

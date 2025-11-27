@@ -1,0 +1,5 @@
+func.func @matrix(%in_a : !llvm.ptr, %in_b : !llvm.ptr, %out_c : !llvm.ptr) {
+	%c0 = arith.constant 0 : i32
+	func.call @HACE.matrix(%c0, %c0, %c0, %in_a, %in_b, %out_c) : ( i32,  i32,  i32,  !llvm.ptr,  !llvm.ptr,  !llvm.ptr) -> ()
+	func.return
+}

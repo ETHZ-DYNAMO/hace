@@ -1,0 +1,21 @@
+{
+    "name_function": "covariance",
+    "return_type": "void",
+    "arguments": [
+        {
+            "name": "data",
+            "type": "int*",
+            "size": 1024
+        },
+        {
+            "name": "symmat",
+            "type": "int*",
+            "size": 1024
+        },
+        {
+            "name": "mean",
+            "type": "int*",
+            "size": 32
+        }
+    ]
+}

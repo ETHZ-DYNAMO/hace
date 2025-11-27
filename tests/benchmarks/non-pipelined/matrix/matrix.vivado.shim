@@ -1,0 +1,4 @@
+func.func @matrix(%in_a : !llvm.ptr, %in_b : !llvm.ptr, %out_c : !llvm.ptr) {
+	func.call @HACE.matrix(%in_a, %in_b, %out_c) : (!llvm.ptr,  !llvm.ptr,  !llvm.ptr) -> ()
+	func.return
+}

@@ -1,0 +1,4 @@
+func.func @memory_dependency(%val : i32, %memory : !llvm.ptr) -> (i32) {
+	%r = func.call @HACE.memory_dependency(%val, %memory) : (i32, !llvm.ptr) -> (i32)
+	func.return %r : i32
+}

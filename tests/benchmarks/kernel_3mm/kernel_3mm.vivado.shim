@@ -1,0 +1,5 @@
+func.func @kernel_3mm(%arg_A : !llvm.ptr, %arg_B : !llvm.ptr, %arg_C : !llvm.ptr, %arg_D : !llvm.ptr, %arg_E : !llvm.ptr, %arg_F : !llvm.ptr, %arg_G : !llvm.ptr) {
+	%c0 = arith.constant 0 : i32
+	func.call @HACE.kernel_3mm(%c0, %c0,%c0, %c0, %c0, %c0, %c0, %arg_A, %arg_B, %arg_C, %arg_D, %arg_E, %arg_F, %arg_G) : ( i32,  i32,  i32,  i32,  i32,  i32,  i32,  !llvm.ptr,  !llvm.ptr,  !llvm.ptr,  !llvm.ptr,  !llvm.ptr,  !llvm.ptr,  !llvm.ptr) -> ()
+	func.return
+}

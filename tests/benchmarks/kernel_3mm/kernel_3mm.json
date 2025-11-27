@@ -1,0 +1,41 @@
+{
+    "name_function": "kernel_3mm",
+    "return_type": "void",
+    "arguments": [
+        {
+            "name": "A",
+            "type": "int*",
+            "size": 64
+        },
+        {
+            "name": "B",
+            "type": "int*",
+            "size": 64
+        },
+        {
+            "name": "C",
+            "type": "int*",
+            "size": 64
+        },
+        {
+            "name": "D",
+            "type": "int*",
+            "size": 64
+        },
+        {
+            "name": "E",
+            "type": "int*",
+            "size": 64
+        },
+        {
+            "name": "F",
+            "type": "int*",
+            "size": 64
+        },
+        {
+            "name": "G",
+            "type": "int*",
+            "size": 64
+        }
+    ]
+}

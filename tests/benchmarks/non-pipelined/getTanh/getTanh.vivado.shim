@@ -1,0 +1,6 @@
+func.func @getTanh(%A : !llvm.ptr, %addr : !llvm.ptr) -> () {
+	func.call @HACE.getTanh(%A, %addr) : (!llvm.ptr, !llvm.ptr) -> ()
+	func.return
+}
+
+

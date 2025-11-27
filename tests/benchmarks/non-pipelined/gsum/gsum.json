@@ -1,0 +1,11 @@
+{
+    "name_function": "gsum",
+    "return_type": "int",
+    "arguments": [
+        {
+            "name": "a",
+            "type": "int*",
+            "size": 1000
+        }
+    ]
+}

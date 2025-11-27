@@ -1,0 +1,4 @@
+func.func @gsum(%a: !llvm.ptr) -> (i32) {
+	%r = func.call @HACE.gsum(%a) : (!llvm.ptr) -> (i32)
+	func.return %r : i32
+}

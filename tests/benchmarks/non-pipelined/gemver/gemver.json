@@ -1,0 +1,61 @@
+{
+    "name_function": "gemver",
+    "return_type": "void",
+    "arguments": [
+        {
+            "name": "alpha",
+            "type": "int",
+            "size": 1
+        },
+        {
+            "name": "beta",
+            "type": "int",
+            "size": 1
+        },
+        {
+            "name": "A",
+            "type": "int*",
+            "size": 1024
+        },
+        {            
+            "name": "u1",
+            "type": "int*",
+            "size": 32
+        },
+        {            
+            "name": "v1",
+            "type": "int*",
+            "size": 32
+        },
+        {            
+            "name": "u2",
+            "type": "int*",
+            "size": 32
+        },
+        {            
+            "name": "v2",
+            "type": "int*",
+            "size": 32
+        },
+        {            
+            "name": "w",
+            "type": "int*",
+            "size": 32
+        },
+        {            
+            "name": "x",
+            "type": "int*",
+            "size": 32
+        },
+        {            
+            "name": "y",
+            "type": "int*",
+            "size": 32
+        },
+        {            
+            "name": "z",
+            "type": "int*",
+            "size": 32
+        }
+    ]
+}

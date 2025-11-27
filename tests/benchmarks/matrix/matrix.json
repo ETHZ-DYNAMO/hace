@@ -1,0 +1,21 @@
+{
+    "name_function": "matrix",
+    "return_type": "void",
+    "arguments": [
+        {
+            "name": "in_a",
+            "type": "int*",
+            "size": 1024
+        },
+        {
+            "name": "in_b",
+            "type": "int*",
+            "size": 1024
+        },
+        {
+            "name": "out_c",
+            "type": "int*",
+            "size": 1024
+        }
+    ]
+}

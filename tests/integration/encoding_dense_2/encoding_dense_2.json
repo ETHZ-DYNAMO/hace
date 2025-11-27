@@ -1,0 +1,11 @@
+{
+    "name_function": "encoding_dense_2",
+    "return_type": "int",
+    "arguments": [
+        {
+            "name": "arg_A",
+            "type": "int",
+            "size": 1
+        }
+    ]
+}

@@ -1,0 +1,4 @@
+func.func @kmp(%pattern : !llvm.ptr, %input : !llvm.ptr, %kmpNext : !llvm.ptr) {
+	func.call @HACE.kmp(%pattern, %input, %kmpNext) : ( !llvm.ptr,  !llvm.ptr,  !llvm.ptr) -> ()
+	func.return
+}

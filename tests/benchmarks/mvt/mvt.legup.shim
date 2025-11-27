@@ -1,0 +1,5 @@
+func.func @mvt(%A : !llvm.ptr, %x1 : !llvm.ptr, %x2 : !llvm.ptr, %y1 : !llvm.ptr, %y2 : !llvm.ptr) {
+	%c0 = arith.constant 0 : i32
+	func.call @HACE.mvt(%c0, %c0, %c0, %c0, %c0, %A, %x1, %x2, %y1, %y2) : ( i32,  i32,  i32,  i32,  i32,  !llvm.ptr,  !llvm.ptr,  !llvm.ptr,  !llvm.ptr,  !llvm.ptr) -> ()
+	func.return
+}

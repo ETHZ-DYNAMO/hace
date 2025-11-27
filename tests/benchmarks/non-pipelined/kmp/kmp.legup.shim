@@ -1,0 +1,5 @@
+func.func @kmp(%pattern : !llvm.ptr, %input : !llvm.ptr, %kmpNext : !llvm.ptr) -> () {
+	%c0 = arith.constant 0 : i32
+	func.call @HACE.kmp(%c0, %c0, %c0, %input, %kmpNext, %pattern) : (i32,i32,i32, !llvm.ptr, !llvm.ptr, !llvm.ptr) -> ()
+	func.return
+}

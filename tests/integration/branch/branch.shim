@@ -1,0 +1,4 @@
+func.func @branch(%arg_A : i32, %arg_B : i32, %arg_C : i32) -> (i32) {
+	%r = func.call @HACE.branch(%arg_A, %arg_B, %arg_C) : (i32, i32, i32) -> (i32)
+	func.return %r : i32
+}

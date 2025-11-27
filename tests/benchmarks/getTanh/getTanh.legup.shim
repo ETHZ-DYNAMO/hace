@@ -1,0 +1,6 @@
+func.func @getTanh(%A : !llvm.ptr, %addr : !llvm.ptr) {
+	%offset_a = arith.constant 0 : i32
+	%offset_b = arith.constant 0 : i32
+	func.call @HACE.getTanh(%offset_a, %offset_b, %A, %addr) : (i32, i32, !llvm.ptr, !llvm.ptr) -> ()
+	func.return
+}

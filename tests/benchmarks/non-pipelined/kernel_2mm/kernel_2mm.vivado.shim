@@ -1,0 +1,4 @@
+func.func @kernel_2mm(%alpha : i32, %beta : i32, %tmp : !llvm.ptr, %A : !llvm.ptr, %B : !llvm.ptr, %C : !llvm.ptr, %D : !llvm.ptr) {
+	func.call @HACE.kernel_2mm(%alpha, %beta, %A, %B, %C, %D, %tmp) : (i32,  i32,  !llvm.ptr,  !llvm.ptr,  !llvm.ptr,  !llvm.ptr,  !llvm.ptr) -> ()
+	func.return
+}

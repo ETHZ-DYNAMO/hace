@@ -1,0 +1,5 @@
+func.func @gaussian(%c : !llvm.ptr, %A : !llvm.ptr) -> () {
+	%c0 = arith.constant 0 : i32
+	func.call @HACE.gaussian (%c0, %c0, %A, %c) : (i32, i32, !llvm.ptr, !llvm.ptr) -> ()
+	func.return
+}

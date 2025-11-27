@@ -1,0 +1,21 @@
+{
+    "name_function": "test_args",
+    "return_type": "int",
+    "arguments": [
+        {
+            "name": "input_a",
+            "type": "int",
+            "size": 1
+        },
+        {
+            "name": "input_b",
+            "type": "int",
+            "size": 1
+        },
+        {
+            "name": "input_c",
+            "type": "int",
+            "size": 1
+        }
+    ]
+}

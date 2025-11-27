@@ -1,0 +1,21 @@
+{
+    "name_function": "resource_sharing_merge",
+    "return_type": "int",
+    "arguments": [
+        {
+            "name": "arg_A",
+            "type": "int",
+            "size": 1
+        },
+        {
+            "name": "arg_B",
+            "type": "int",
+            "size": 1
+        },
+        {
+            "name": "arg_C",
+            "type": "int",
+            "size": 1
+        }
+    ]
+}

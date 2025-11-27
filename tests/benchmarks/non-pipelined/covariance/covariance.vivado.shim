@@ -1,0 +1,4 @@
+func.func @covariance(%data : !llvm.ptr, %symmat : !llvm.ptr, %mean : !llvm.ptr) -> () {
+	func.call @HACE.covariance(%data, %mean, %symmat) : (!llvm.ptr, !llvm.ptr, !llvm.ptr) -> ()
+	func.return
+}

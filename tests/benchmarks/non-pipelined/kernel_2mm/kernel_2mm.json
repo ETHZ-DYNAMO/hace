@@ -1,0 +1,41 @@
+{
+    "name_function": "kernel_2mm",
+    "return_type": "void",
+    "arguments": [
+        {
+            "name": "alpha",
+            "type": "int",
+            "size": 1
+        },
+        {            
+            "name": "beta",
+            "type": "int",
+            "size": 1
+        },
+        {            
+            "name": "tmp",
+            "type": "int*",
+            "size": 64
+        },
+        {            
+            "name": "A",
+            "type": "int*",
+            "size": 64
+        },
+        {            
+            "name": "B",
+            "type": "int*",
+            "size": 64
+        },
+        {            
+            "name": "C",
+            "type": "int*",
+            "size": 64
+        },
+        {            
+            "name": "D",
+            "type": "int*",
+            "size": 64
+        }
+    ]
+}

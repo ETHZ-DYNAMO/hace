@@ -1,0 +1,23 @@
+{
+    "name_function": "kmp",
+    "return_type": "void",
+    "arguments": [
+        {
+            "name": "pattern",
+            "type": "int*",
+            "size": 4
+        },
+        {
+            "name": "input",
+            "type": "int*",
+            "size": 1000
+        },
+        {
+            "name": "kmpNext",
+            "type": "int*",
+            "size": 4,
+            "limit-max": 3,
+            "limit-min": 0
+        }
+    ]
+}

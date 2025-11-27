@@ -1,0 +1,4 @@
+func.func @memory(%memory : !llvm.ptr) {
+	func.call @HACE.memory(%memory) : (!llvm.ptr) -> ()
+	func.return
+}

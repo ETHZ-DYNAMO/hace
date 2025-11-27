@@ -1,0 +1,11 @@
+{
+    "name_function": "getTanh",
+    "return_type": "void",
+    "arguments": [
+        {
+            "name": "addr",
+            "type": "int*",
+            "size": 2
+        },
+    ]
+}

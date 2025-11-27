@@ -1,0 +1,4 @@
+func.func @encoding_dense_2(%arg_A : i32) -> (i32) {
+	%r = func.call @HACE.encoding_dense_2(%arg_A) : (i32) -> (i32)
+	func.return %r : i32
+}

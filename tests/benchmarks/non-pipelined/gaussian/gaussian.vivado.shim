@@ -1,0 +1,4 @@
+func.func @gaussian(%c : !llvm.ptr, %A : !llvm.ptr) -> () {
+	func.call @HACE.gaussian (%A, %c) : (!llvm.ptr, !llvm.ptr) -> ()
+	func.return
+}

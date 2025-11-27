@@ -1,0 +1,4 @@
+func.func @mvt(%A : !llvm.ptr, %x1 : !llvm.ptr, %x2 : !llvm.ptr, %y1 : !llvm.ptr, %y2 : !llvm.ptr) -> () {
+	func.call @HACE.mvt(%A, %x1, %x2, %y1, %y2) : (!llvm.ptr, !llvm.ptr, !llvm.ptr, !llvm.ptr, !llvm.ptr) -> ()
+	func.return
+}

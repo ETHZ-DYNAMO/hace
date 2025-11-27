@@ -1,0 +1,16 @@
+{
+    "name_function": "memory_dependency",
+    "return_type": "int",
+    "arguments": [
+        {
+            "name": "value",
+            "type": "int",
+            "size": 1
+        },
+        {
+            "name": "addr",
+            "type": "int*",
+            "size": 2
+        }
+    ]
+}
