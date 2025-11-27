@@ -9,7 +9,7 @@ The following requirements are needed to run HACE:
 3. [LLVM](https://github.com/llvm/llvm-project) version 18.0.0+
 4. [Graphviz](https://graphviz.org/doc/info/command.html) version 2.40.0+
 
-Both hongfuzz and LLVM binaries should be included in the PATH environment variable.
+**IMPORTANT**: Both hongfuzz and LLVM binaries **full paths** should be included in the PATH environment variable.
 
 Moreover, additional python packages should be installed using the command
 ```
