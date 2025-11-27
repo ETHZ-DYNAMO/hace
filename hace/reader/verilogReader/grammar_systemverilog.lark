@@ -1,0 +1,243 @@
+// Copyright 2024 Hanyu Wang
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+
+// Following https://www.verilog.com/VerilogBNF.html
+
+// 1. Source Text
+start: (macro_definition | timescale_definition | module)+
+
+// 1.1 Macros
+macro_definition: "`define" ( NAME | ESCAPED_IDENTIFIER ) " " expression
+
+// 1.2 Timescale Directive
+timescale_definition: "`timescale" NUMBER time_identifier "/" NUMBER time_identifier
+time_identifier: "s" -> s | "ms" -> ms | "us" -> us | "ns" -> ns | "ps" -> ps
+
+// 1.3 Module Declaration
+module: "module" [NAME] [parameter_list] [port_list] ";" module_body* "endmodule"
+
+// 1.4 Signedness
+signedness: "signed"    -> signed
+           | "unsigned" -> unsigned
+
+// 1.3.1 Parameter List
+parameter_list: "#(" [parameter_assignment] ("," parameter_assignment)* ")"
+parameter_assignment: lhs_expression "=" lhs_expression
+
+// 1.3.2 Port List
+port_list: "(" [port_definition] ("," port_definition)* ")"
+port_definition: [port_direction] [port_type] [signedness] [port_range] lhs_expression
+
+// 1.4 Module. i.e., what is inside a module
+?module_body: always_block
+            | initial_block
+            | single_statement
+            | module_instantiation // This includes module inst antiation
+            | macro_definition // This includes `define
+            | define_parameter
+
+// 1.5 Module Instantiation
+module_instantiation: NAME ["#(" argument_list ")"] NAME "(" [argument_list] ")" ";" 
+argument_list: argument ("," argument)*
+argument: "." NAME "(" [expression] ")" -> named_argument
+        | expression -> positional_argument
+
+// 1.6 Define Parameter
+define_parameter: "defparam" parameter_definition ("," parameter_definition)* ";"
+parameter_definition: NAME "." NAME "=" const_expression
+
+// 2. Declarations
+
+// 2.1 Parameter Declarations
+?port_type: "reg" -> reg | "wire" -> wire | "integer" -> integer | "real" -> real | "parameter" -> parameter | "localparam" -> localparam
+port_direction: "input" -> input | "output" -> output | "inout" -> inout
+
+// 2.4 Variable Assignments
+// TODO: The challenge here is to differentiate between the non-blocking assignments and the comparison expressions
+// In Verilog, the assignment operator is "=". However, the "<=" operator is used for non-blocking assignments.
+declaration: [port_direction] [port_type] [signedness] [port_range] variable_list ["=" expression] ";"
+// WARNING: This should not be flattened, i.e., we should not use ? to bypass the AST level
+variable_list: lhs_expression ("," lhs_expression)*
+
+// 2.3 Variable Declarations and Assignments
+// the block statement is a statement block or a single statement
+// TODO: logical operators and many are not supported
+always_block: "always" "@" "(" event_expression ")" statement
+event_expression: NAME -> event_variable
+                | "posedge" event_expression -> unary_posedge
+                | "negedge" event_expression -> unary_negedge
+                | "*" -> combinational_event_expression
+                | event_expression "or" event_expression -> binary_event_or
+                | event_expression "and" event_expression -> binary_event_and
+                | "(" event_expression ")" -> event_parenthesis
+
+// initial block is used to execute a block of code once at the beginning of the simulation
+initial_block: "initial" statement
+
+// 3. Statements
+single_statement: "assign" lhs_expression "=" expression ";" -> blocking_assignment
+                | lhs_expression "<=" expression ";" -> non_blocking_assignment
+                | declaration
+                | conditional_statement
+                | case_statement
+                | function_call ";" -> function_call_statement
+                | dollar_indentifier ";"
+
+// 3.1 Conditional Statements
+// The "if" statement is used to execute a block of code if a condition is true. If the condition is false, another block of code can be executed with the "else" statement.
+conditional_statement: if_statement else_if_statement* else_statement?
+if_statement: "if" "(" expression ")" statement
+else_if_statement: "else if" "(" expression ")" statement
+else_statement: "else" statement
+
+// the block statement is a statement block or a single statement 
+// (1) statement_block: "begin" statement+ "end"
+// (2) single_statement: statement
+statement: statement_block | single_statement
+?statement_block: "begin" single_statement* "end"
+
+
+// 3.3 Case Statements
+case_statement: "case" "(" lhs_expression ")" case_item+ "endcase"
+case_item: "default" ":" statement -> default_case
+        | expression ":" statement -> regular_case
+
+// 5 Function calls
+dollar_indentifier: "$" /[a-zA-Z_][a-zA-Z0-9_]*/
+function_call: dollar_indentifier (function_parameters | empty_function_parameters)?
+?function_parameters: "(" expression ("," expression)* ")"
+?empty_function_parameters: "(" ")"
+
+// 7. Ranges
+port_range : "[" expression ":" expression "]"
+
+// 8. Expressions
+variable: NAME | ESCAPED_IDENTIFIER
+lhs_expression: variable
+                | "{" expression ("," expression)* "}" -> array_concat // Concatenation is treated as an expression
+                | "{" expression "{" expression "}" "}" -> array_replicate // Repeated concatenation is treated as an expression
+                | expression "[" expression "]" -> array_index // Array indexing is treated as an expression
+                | expression "[" expression ":" expression "]" -> array_slice // Array slicing is treated as an expression
+
+?const_expression: string
+                | regular_number
+                | based_number
+                | extended_based_number
+                | "`" NAME -> macro_usage
+
+?expression: lhs_expression
+// 8.0.0 Constants, these are fine to be flattened
+            | const_expression
+// 8.0.1 Function calls
+            | "$" NAME function_parameters -> function_call // Function calls are treated as expressions
+// 8.1 Operators
+// Operators are used to perform operations on variables and values.
+// note that we cannot separate the operators into different levels, as the operators are not strictly ordered
+// Reference: https://documentation-rp-test.readthedocs.io/en/latest/tutorfpga04.html
+// Reference: https://medium.com/verilog-novice-to-wizard/operators-in-verilog-f1290e85b7c2
+// TODO: double check the precedence of the reduction operators
+//
+// 8.1.8 Conditional Operator
+// This operator has the next highest precedence
+            | expression "?" expression ":" expression -> conditional_expression
+// 8.1.7 Logical Operators
+// These operators have the next highest precedence
+            | expression "&&" expression -> binary_and // Logical AND
+            | expression "||" expression -> binary_or // Logical OR
+// 8.1.6 Bitwise Operators
+// These operators have the next highest precedence 
+            | expression "&" expression -> binary_bitand // Bitwise AND
+            | expression "^" expression -> binary_xor // Bitwise XOR
+            | expression "^~" expression -> binary_xnor // Bitwise XNOR
+            | expression "~^" expression -> binary_xnor // Bitwise XNOR
+            | expression "|" expression -> binary_bitor // Bitwise OR
+// 8.1.5 Equivalence Operators
+// These operators have the next highest precedence
+            | expression "==" expression -> binary_eq // Equal
+            | expression "!=" expression -> binary_neq // Not equal
+            | expression "===" expression -> binary_eq_ext // Case equality
+            | expression "!==" expression -> binary_neq_ext // Case inequality
+// 8.1.4 Comparison Operators
+// These operators have the next highest precedence
+            | expression "<" expression -> binary_lt // Less than
+            | expression ">" expression -> binary_gt // Greater than
+            | expression "<=" expression -> binary_leq // Less than or equal
+            | expression ">=" expression -> binary_geq // Greater than or equal
+// 8.1.3 Shift Operators
+// These operators have the next highest precedence
+            | expression ">>" expression -> binary_rshift // Shift right
+            | expression ">>>" expression -> binary_rshift_ext // Shift right with sign extension
+            | expression "<<" expression -> binary_lshift // Shift left
+            | expression "<<<" expression -> binary_lshift_ext // Shift left with sign extension
+// 8.1.2 Binary Plus and Minus
+// These operators have the next highest precedence
+            | expression "+" expression -> binary_add // Addition
+            | expression "-" expression -> binary_sub // Subtraction
+// 8.1.2 Arithmetic Operators (Continued)
+// These operators have the next highest precedence
+            | expression "*" expression -> binary_mul // Multiplication
+            | expression "/" expression -> binary_div // Division
+            | expression "%" expression -> binary_mod // Modulus
+// 8.1.3 Power Operator
+// This operator has the next highest precedence
+            | expression "**" expression -> binary_pow // Power
+// 8.1.1 Unary Operators
+// These operators has the second highest precedence
+            | "+" expression -> unary_pos // Unary plus
+            | "-" expression -> unary_neg // Unary minus
+            | "!" expression -> unary_not // Logical NOT
+            | "~" expression -> unary_inv // Bitwise NOT
+// 8.1.1.1 Unitary Reduction Operators
+// These operators have the highest precedence
+            | "&" expression -> unary_and // Bitwise AND reduction
+            | "|" expression -> unary_or // Bitwise OR reduction
+            | "^" expression -> unary_xor // Bitwise XOR reduction
+            | "~&" expression -> unary_nand // Bitwise NAND reduction
+            | "~|" expression -> unary_nor // Bitwise NOR reduction
+            | "~^" expression -> unary_xnor // Bitwise XNOR reduction
+// 8.0 Parentheses
+// Parentheses are used to group expressions
+// These operators have the highest precedence
+            | "(" expression ")"
+
+// special characters
+string: /"[^"]*"/  // Captures a sequence of characters within double quotes
+
+// 9. Numbers
+based_number: /'[bdh][0-9a-fA-F_]+/
+extended_based_number: /([0-9]*)'[bdhoBDHO][0-9a-fA-F_xXzZ]+/
+regular_number: /(?<![\d'])\d+(?![\d'bhd])/
+
+
+// Lark
+DELAY_CONTROL: "#" /[0-9]+/
+ESCAPED_IDENTIFIER: /\\([^\s]+)/
+COMMENT: "//" /[^\n]*/ NEWLINE
+INLINE_COMMENT: "(*" /[^\n]*/ "*)"
+NEWLINE: "\n"
+MULTILINE_COMMENT: /\/\*(\*(?!\/)|[^*])*\*\//
+STRING_NO_SPACE: /[^\s]+/
+
+%import common.CNAME -> NAME
+%import common.NUMBER
+%import common.ESCAPED_STRING
+%import common.WS
+
+%ignore WS
+%ignore COMMENT
+%ignore MULTILINE_COMMENT
+%ignore NEWLINE
+%ignore INLINE_COMMENT
+%ignore DELAY_CONTROL
